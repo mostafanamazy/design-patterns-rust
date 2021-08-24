@@ -1,0 +1,10 @@
+[workspace]
+
+members = [
+    "strategy",
+    "observer",
+    "chain-of-responsibility",
+    "decorator",
+    "state",
+    "builder",
+]
