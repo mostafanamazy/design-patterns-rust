@@ -1,14 +1,12 @@
-use state::post::Post;
+use state::gumball::GumballMachine;
 fn main() {
-    let mut post = Post::new();
+    let mut gumball = GumballMachine::new(5);
 
-    post.add_text("I ate a salad for lunch today");
-    assert_eq!("", post.content());
+    gumball.insert_quarter();
+    gumball.turn_crank();
 
-    post.request_review();
-    assert_eq!("", post.content());
-    post.add_text("AAA");
-
-    post.approve();
-    assert_eq!("I ate a salad for lunch today", post.content());
+    gumball.insert_quarter();
+    gumball.turn_crank();
+    gumball.insert_quarter();
+    gumball.eject_quarter();
 }

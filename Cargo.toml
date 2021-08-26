@@ -1,10 +1,11 @@
 [workspace]
 
 members = [
-    "strategy",
-    "observer",
+    "builder",
     "chain-of-responsibility",
     "decorator",
+    "factory",
+    "observer",
     "state",
-    "builder",
+    "strategy",
 ]

@@ -1,12 +1,7 @@
-use crate::post::Post;
+use crate::gumball::GumballMachine;
 pub trait State {
-    fn request_review(self: Box<Self>) -> Box<dyn State>;
-    fn approve(self: Box<Self>) -> Box<dyn State>;
-    fn reject(self: Box<Self>) -> Box<dyn State>;
-    fn add_text<'a>(&self, _text: &'a str) -> &'a str {
-        ""
-    }
-    fn content<'a>(&self, _post: &'a Post) -> &'a str {
-        ""
-    }
+    fn insert_quarter(self: Box<Self>) -> Box<dyn State>;
+    fn eject_quarter(self: Box<Self>) -> Box<dyn State>;
+    fn turn_crank(self: Box<Self>, gumball: &GumballMachine) -> Box<dyn State>;
+    fn dispense(self: Box<Self>, gumball: &mut GumballMachine) -> Box<dyn State>;
 }
