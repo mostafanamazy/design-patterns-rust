@@ -37,7 +37,7 @@ pub struct StatisticsDisplay {
     count: usize,
 }
 impl StatisticsDisplay {
-    pub fn new() -> StatisticsDisplay{
+    pub fn new() -> StatisticsDisplay {
         StatisticsDisplay {
             max: 0.0,
             min: 0.0,

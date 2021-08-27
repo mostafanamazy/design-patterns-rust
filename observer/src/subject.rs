@@ -1,13 +1,14 @@
 use crate::observer::Observer;
-use std::collections::HashMap;
+use std::cell::RefCell;
+use std::rc::Rc;
 pub trait Subject {
-    fn register_observer(&mut self, key: &'static str, observer: Box<dyn Observer>);
-    fn remove_observer(&mut self, key: &'static str);
+    fn register_observer(&mut self, observer: Rc<RefCell<dyn Observer>>);
+    fn remove_observer(&mut self, observer: Rc<RefCell<dyn Observer>>);
     fn notify_observers(&mut self);
 }
 
 pub struct WeatherData {
-    observers: HashMap<&'static str, Box<dyn Observer>>,
+    observers: Vec<Rc<RefCell<dyn Observer>>>,
     temperature: f32,
     humidity: f32,
     pressure: f32,
@@ -15,7 +16,7 @@ pub struct WeatherData {
 impl WeatherData {
     pub fn new() -> WeatherData {
         WeatherData {
-            observers: HashMap::new(),
+            observers: vec![],
             temperature: 0.0,
             humidity: 0.0,
             pressure: 0.0,
@@ -31,15 +32,16 @@ impl WeatherData {
     }
 }
 impl Subject for WeatherData {
-    fn register_observer(&mut self, key: &'static str, observer: Box<dyn Observer>){
-        self.observers.insert(key, observer);
+    fn register_observer(&mut self, observer: Rc<RefCell<dyn Observer>>) {
+        self.observers.push(observer);
     }
-    fn remove_observer(&mut self, key: &'static str) {
-        self.observers.remove(key);
+    fn remove_observer(&mut self, observer: Rc<RefCell<dyn Observer>>) {
+        self.observers.retain(|k| !Rc::ptr_eq(k, &observer));
     }
     fn notify_observers(&mut self) {
-        for o in self.observers.values_mut() {
-            o.update(self.temperature, self.humidity, self.pressure);
+        for o in self.observers.iter() {
+            o.borrow_mut()
+                .update(self.temperature, self.humidity, self.pressure);
         }
     }
 }
